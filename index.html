@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teknik Komputer dan Jaringan - Materi Linux Server</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            navy: {
+              950: '#040914',
+              900: '#070F22',
+              800: '#0D1936',
+              700: '#16264E',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #040914;
+      color: #E2E8F0;
+    }
+    .grid-bg {
+      background-image: linear-gradient(to right, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    .glass-card {
+      background: rgba(13, 25, 54, 0.72);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(56, 189, 248, 0.16);
+    }
+    .glass-card:hover {
+      border-color: rgba(56, 189, 248, 0.38);
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-sky-500 selection:text-white">
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50 bg-navy-950/90 backdrop-blur-md border-b border-sky-500/15">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="#beranda" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/25 shrink-0">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="6" rx="1.5"/>
+            <rect x="3" y="14" width="18" height="6" rx="1.5"/>
+            <circle cx="7" cy="7" r="1" fill="currentColor"/>
+            <circle cx="7" cy="17" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <span class="font-bold text-sm sm:text-base tracking-tight text-white block leading-tight">Teknik Komputer <span class="text-sky-400">dan Jaringan</span></span>
+          <span class="text-[10px] uppercase tracking-widest text-slate-400 font-medium">Administrasi Linux Server</span>
+        </div>
+      </a>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="#beranda" class="hover:text-sky-400 transition">Beranda</a>
+        <a href="#profil" class="hover:text-sky-400 transition">Profil</a>
+        <a href="#materi" class="hover:text-sky-400 transition">Materi Linux Server</a>
+        <a href="#terminal" class="hover:text-sky-400 transition">Simulator Server</a>
+        <a href="#latihan" class="hover:text-sky-400 transition">Latihan</a>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button id="menu-btn" aria-label="Buka Menu" class="md:hidden p-2 rounded-lg text-slate-300 hover:bg-navy-800 hover:text-white transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden bg-navy-900 border-b border-sky-500/15 px-4 py-4 space-y-2.5 text-sm font-medium">
+      <a href="#beranda" class="block py-1.5 text-slate-200 hover:text-sky-400">Beranda</a>
+      <a href="#profil" class="block py-1.5 text-slate-200 hover:text-sky-400">Profil Teknik Komputer dan Jaringan</a>
+      <a href="#materi" class="block py-1.5 text-slate-200 hover:text-sky-400">Materi Linux Server</a>
+      <a href="#terminal" class="block py-1.5 text-slate-200 hover:text-sky-400">Simulator Server</a>
+      <a href="#latihan" class="block py-1.5 text-slate-200 hover:text-sky-400">Latihan Pemahaman</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="beranda" class="relative overflow-hidden grid-bg border-b border-sky-500/15">
+    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[560px] h-[300px] bg-sky-500/15 blur-[110px] rounded-full pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24 relative">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/25 text-sky-300 text-xs font-semibold mb-6">
+          <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+          Materi Teknik Komputer dan Jaringan: Linux Server
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-5">
+          Infrastruktur & Layanan <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">Linux Server</span>
+        </h1>
+        <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+          Portal pembelajaran Teknik Komputer dan Jaringan untuk menguasai arsitektur Linux Server berbasis CLI, manajemen layanan jaringan (Web, DNS, DHCP, SSH), serta pengelolaan sistem server yang stabil dan aman.
+        </p>
+        <div class="flex flex-wrap gap-3.5">
+          <a href="#materi" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-navy-950 font-bold text-sm transition shadow-lg shadow-sky-500/25">
+            Pelajari Materi Linux Server
+          </a>
+          <a href="#terminal" class="px-6 py-3 rounded-xl bg-navy-800 hover:bg-navy-700 text-white border border-sky-500/25 font-semibold text-sm transition">
+            Simulasi CLI Server
+          </a>
+        </div>
+      </div>
+
+      <!-- Highlight Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
+        <div class="glass-card rounded-2xl p-4">
+          <div class="font-mono text-sky-400 font-bold text-xl">CLI & SSH</div>
+          <div class="text-xs text-slate-400 mt-1">Kontrol penuh tanpa beban GUI</div>
+        </div>
+        <div class="glass-card rounded-2xl p-4">
+          <div class="font-mono text-cyan-300 font-bold text-xl">24/7 Uptime</div>
+          <div class="text-xs text-slate-400 mt-1">Stabilitas tinggi untuk produksi</div>
+        </div>
+        <div class="glass-card rounded-2xl p-4">
+          <div class="font-mono text-emerald-400 font-bold text-xl">5 Layanan</div>
+          <div class="text-xs text-slate-400 mt-1">Web, DNS, DHCP, File, Firewall</div>
+        </div>
+        <div class="glass-card rounded-2xl p-4">
+          <div class="font-mono text-amber-300 font-bold text-xl">6 Bab</div>
+          <div class="text-xs text-slate-400 mt-1">Konsep, Perintah & Praktik</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profil Section -->
+  <section id="profil" class="py-16 border-b border-sky-500/15 bg-navy-900/40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="grid md:grid-cols-12 gap-8 items-center">
+        <div class="md:col-span-5">
+          <span class="text-xs font-bold uppercase tracking-widest text-sky-400">Profil Teknik Komputer dan Jaringan</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-2 mb-4">Kompetensi Inti Administrasi Server</h2>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            <strong>Teknik Komputer dan Jaringan</strong> membekali siswa dengan kemampuan membangun, mengonfigurasi, dan memelihara layanan jaringan menggunakan sistem operasi Linux Server.
+          </p>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Berbeda dari penggunaan desktop biasa, pengelolaan Linux Server melatih ketelitian dalam konfigurasi alamat IP statis, manajemen daemon lewat <code class="font-mono text-sky-300">systemctl</code>, serta akses jarak jauh melalui SSH.
+          </p>
+        </div>
+        <div class="md:col-span-7 grid sm:grid-cols-2 gap-4">
+          <div class="glass-card rounded-2xl p-5">
+            <div class="w-9 h-9 rounded-lg bg-sky-500/15 text-sky-400 flex items-center justify-center font-bold mb-3">01</div>
+            <h3 class="font-bold text-white text-base mb-1.5">Efisiensi Sumber Daya</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Berjalan optimal pada mode teks (CLI) sehingga RAM dan CPU fokus melayani permintaan perangkat client.</p>
+          </div>
+          <div class="glass-card rounded-2xl p-5">
+            <div class="w-9 h-9 rounded-lg bg-cyan-500/15 text-cyan-300 flex items-center justify-center font-bold mb-3">02</div>
+            <h3 class="font-bold text-white text-base mb-1.5">Layanan Jaringan Terpadu</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Satu server dapat menjalankan Web Server, DNS Server, DHCP Server, File Server, dan Firewall secara bersamaan.</p>
+          </div>
+          <div class="glass-card rounded-2xl p-5">
+            <div class="w-9 h-9 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold mb-3">03</div>
+            <h3 class="font-bold text-white text-base mb-1.5">Administrasi Jarak Jauh</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Mengelola konfigurasi server secara aman dari komputer administrator menggunakan protokol SSH.</p>
+          </div>
+          <div class="glass-card rounded-2xl p-5">
+            <div class="w-9 h-9 rounded-lg bg-amber-500/15 text-amber-300 flex items-center justify-center font-bold mb-3">04</div>
+            <h3 class="font-bold text-white text-base mb-1.5">Standar Industri & Virtualisasi</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Siap diimplementasikan pada lingkungan VirtualBox maupun infrastruktur server produksi berbasis Debian/Ubuntu.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Materi Section -->
+  <section id="materi" class="py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-sky-400">Modul Teknik Komputer dan Jaringan</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Materi Linux Server</h2>
+        </div>
+        <div class="w-full md:w-72">
+          <input
+            type="text"
+            id="search-materi"
+            placeholder="Cari topik (misal: SSH, Debian, DHCP)..."
+            class="w-full px-4 py-2.5 rounded-xl bg-navy-900 border border-sky-500/25 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-sky-400"
+          />
+        </div>
+      </div>
+
+      <!-- Navigasi Cepat Bab -->
+      <div class="flex flex-wrap gap-2 mb-8">
+        <a href="#bab-1" class="px-3 py-1.5 rounded-lg bg-navy-800 hover:bg-sky-500/20 text-xs font-medium text-sky-300 border border-sky-500/20 transition">1. Pengertian</a>
+        <a href="#bab-2" class="px-3 py-1.5 rounded-lg bg-navy-800 hover:bg-sky-500/20 text-xs font-medium text-sky-300 border border-sky-500/20 transition">2. Server vs Desktop</a>
+        <a href="#bab-3" class="px-3 py-1.5 rounded-lg bg-navy-800 hover:bg-sky-500/20 text-xs font-medium text-sky-300 border border-sky-500/20 transition">3. Fungsi & Layanan</a>
+        <a href="#bab-4" class="px-3 py-1.5 rounded-lg bg-navy-800 hover:bg-sky-500/20 text-xs font-medium text-sky-300 border border-sky-500/20 transition">4. Distro Server</a>
+        <a href="#bab-5" class="px-3 py-1.5 rounded-lg bg-navy-800 hover:bg-sky-500/20 text-xs font-medium text-sky-300 border border-sky-500/20 transition">5. Perintah Administrasi</a>
+        <a href="#bab-6" class="px-3 py-1.5 rounded-lg bg-navy-800 hover:bg-sky-500/20 text-xs font-medium text-sky-300 border border-sky-500/20 transition">6. Alur Belajar</a>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- 1. Pengertian Linux Server -->
+        <article id="bab-1" class="materi-item glass-card rounded-2xl p-6 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 rounded-md bg-sky-500/20 text-sky-300 font-mono text-xs font-bold">01</span>
+            <h3 class="text-lg font-bold text-white">Pengertian Linux Server</h3>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed mb-3">
+            <strong>Linux Server</strong> adalah versi sistem operasi Linux yang dikonfigurasi dan dioptimalkan untuk berjalan di komputer server guna melayani permintaan dari perangkat lain (<em>client</em>) melalui jaringan komputer maupun internet.
+          </p>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Umumnya Linux Server dioperasikan lewat <strong>CLI (Command Line Interface)</strong> atau akses jarak jauh seperti <strong>SSH</strong> agar lebih ringan, hemat sumber daya, dan stabil.
+          </p>
+        </article>
+
+        <!-- 2. Perbedaan Linux Server dan Linux Desktop -->
+        <article id="bab-2" class="materi-item glass-card rounded-2xl p-6 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 rounded-md bg-sky-500/20 text-sky-300 font-mono text-xs font-bold">02</span>
+            <h3 class="text-lg font-bold text-white">Perbedaan Linux Server & Desktop</h3>
+          </div>
+          <ul class="space-y-2.5 text-sm text-slate-300">
+            <li><strong class="text-sky-400">Antarmuka:</strong> Linux Server fokus pada mode teks (terminal/CLI) tanpa membebani memori dengan tampilan desktop berat; Linux Desktop memakai GUI untuk kebutuhan harian.</li>
+            <li><strong class="text-sky-400">Kestabilan & Uptime:</strong> Linux Server dirancang menyala terus-menerus (24/7) dengan efisiensi CPU dan RAM maksimal.</li>
+            <li><strong class="text-sky-400">Keamanan:</strong> Layanan dan port pada Linux Server dibatasi hanya pada kebutuhan tertentu agar lebih aman.</li>
+          </ul>
+        </article>
+
+        <!-- 3. Fungsi & Layanan Umum pada Linux Server -->
+        <article id="bab-3" class="materi-item glass-card rounded-2xl p-6 md:col-span-2 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 rounded-md bg-sky-500/20 text-sky-300 font-mono text-xs font-bold">03</span>
+            <h3 class="text-lg font-bold text-white">Fungsi & Layanan Umum pada Linux Server</h3>
+          </div>
+          <p class="text-sm text-slate-300 mb-4">Satu mesin Linux Server dapat menjalankan berbagai layanan jaringan sesuai kebutuhan:</p>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <div class="font-mono text-xs text-sky-400 font-semibold mb-1">Web Server</div>
+              <p class="text-xs text-slate-300 leading-relaxed">Menyajikan situs dan aplikasi web menggunakan perangkat lunak seperti Apache atau Nginx.</p>
+            </div>
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <div class="font-mono text-xs text-cyan-300 font-semibold mb-1">DNS Server</div>
+              <p class="text-xs text-slate-300 leading-relaxed">Menerjemahkan nama domain ke alamat IP (misalnya menggunakan BIND9).</p>
+            </div>
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <div class="font-mono text-xs text-emerald-400 font-semibold mb-1">DHCP Server</div>
+              <p class="text-xs text-slate-300 leading-relaxed">Membagikan IP Address, Subnet Mask, Gateway, dan DNS secara otomatis kepada client.</p>
+            </div>
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <div class="font-mono text-xs text-amber-300 font-semibold mb-1">File Server</div>
+              <p class="text-xs text-slate-300 leading-relaxed">Berbagi file atau penyimpanan terpusat dalam jaringan seperti Samba atau NFS.</p>
+            </div>
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <div class="font-mono text-xs text-purple-300 font-semibold mb-1">Firewall & Routing</div>
+              <p class="text-xs text-slate-300 leading-relaxed">Mengatur lalu lintas paket data dan keamanan jaringan antar segmen.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. Distro Populer untuk Linux Server -->
+        <article id="bab-4" class="materi-item glass-card rounded-2xl p-6 md:col-span-2 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 rounded-md bg-sky-500/20 text-sky-300 font-mono text-xs font-bold">04</span>
+            <h3 class="text-lg font-bold text-white">Distro Populer untuk Linux Server</h3>
+          </div>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-navy-950/80 border border-sky-500/20 rounded-xl p-4">
+              <h4 class="font-bold text-sky-400 text-sm mb-1.5">Debian Server</h4>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Dikenal sangat stabil, ringan, dan menjadi rujukan utama dalam pembelajaran Teknik Komputer dan Jaringan maupun server produksi.</p>
+            </div>
+            <div class="bg-navy-950/80 border border-cyan-500/20 rounded-xl p-4">
+              <h4 class="font-bold text-cyan-300 text-sm mb-1.5">Ubuntu Server</h4>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Memiliki dukungan dokumentasi dan paket perangkat lunak yang luas serta jadwal rilis LTS (Long Term Support) yang jelas.</p>
+            </div>
+            <div class="bg-navy-950/80 border border-emerald-500/20 rounded-xl p-4">
+              <h4 class="font-bold text-emerald-400 text-sm mb-1.5">Rocky Linux / AlmaLinux</h4>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Alternatif enterprise yang kompatibel dengan ekosistem Red Hat / CentOS di lingkungan perusahaan.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. Perintah Dasar Administrasi Linux Server -->
+        <article id="bab-5" class="materi-item glass-card rounded-2xl p-6 md:col-span-2 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 rounded-md bg-sky-500/20 text-sky-300 font-mono text-xs font-bold">05</span>
+            <h3 class="text-lg font-bold text-white">Perintah Dasar Administrasi Linux Server</h3>
+          </div>
+          <p class="text-sm text-slate-300 mb-4">Selain perintah dasar Linux (<code class="font-mono text-sky-300">pwd</code>, <code class="font-mono text-sky-300">ls</code>, <code class="font-mono text-sky-300">cd</code>, <code class="font-mono text-sky-300">sudo</code>, <code class="font-mono text-sky-300">ip a</code>, <code class="font-mono text-sky-300">ping</code>), administrator Linux Server sering menggunakan perintah berikut:</p>
+          <div class="overflow-x-auto rounded-xl border border-sky-500/20">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-navy-950 text-sky-300 text-xs uppercase">
+                <tr>
+                  <th class="px-4 py-3">Perintah</th>
+                  <th class="px-4 py-3">Fungsi</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 bg-navy-900/60 text-slate-200">
+                <tr><td class="px-4 py-2.5 font-mono text-sky-400">ssh user@ip_server</td><td class="px-4 py-2.5">Mengakses Linux Server dari jarak jauh melalui jaringan</td></tr>
+                <tr><td class="px-4 py-2.5 font-mono text-sky-400">systemctl status &lt;layanan&gt;</td><td class="px-4 py-2.5">Mengecek status layanan (seperti apache2, nginx, atau ssh)</td></tr>
+                <tr><td class="px-4 py-2.5 font-mono text-sky-400">systemctl restart &lt;layanan&gt;</td><td class="px-4 py-2.5">Memuat ulang layanan setelah mengubah konfigurasi</td></tr>
+                <tr><td class="px-4 py-2.5 font-mono text-sky-400">ip a</td><td class="px-4 py-2.5">Melihat konfigurasi alamat IP interface server</td></tr>
+                <tr><td class="px-4 py-2.5 font-mono text-sky-400">ping &lt;tujuan&gt;</td><td class="px-4 py-2.5">Menguji konektivitas jaringan antara server dan client</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- 6. Alur Belajar Linux Server -->
+        <article id="bab-6" class="materi-item glass-card rounded-2xl p-6 md:col-span-2 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold">06</span>
+            <h3 class="text-lg font-bold text-white">Alur Belajar Linux Server untuk Teknik Komputer dan Jaringan</h3>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm text-slate-300">
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <span class="font-mono text-sky-400 font-bold block mb-1">Langkah 1</span>
+              Menyiapkan mesin virtual di <strong>VirtualBox</strong> menggunakan ISO Linux Server (misalnya Debian atau Ubuntu Server).
+            </div>
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <span class="font-mono text-sky-400 font-bold block mb-1">Langkah 2</span>
+              Mengatur adaptor jaringan dan mengonfigurasi <strong>IP Address statis</strong> agar server mudah diakses.
+            </div>
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <span class="font-mono text-sky-400 font-bold block mb-1">Langkah 3</span>
+              Berlatih mengelola file, hak akses, dan layanan lewat <strong>terminal / SSH</strong>.
+            </div>
+            <div class="bg-navy-950/85 border border-slate-800 rounded-xl p-4">
+              <span class="font-mono text-sky-400 font-bold block mb-1">Langkah 4</span>
+              Membangun layanan inti satu per satu seperti <strong>Web Server, DNS Server, dan DHCP Server</strong>.
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Simulator Terminal Server -->
+  <section id="terminal" class="py-16 border-t border-sky-500/15 bg-navy-900/50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="max-w-2xl mb-6">
+        <span class="text-xs font-bold uppercase tracking-widest text-sky-400">Simulasi Administrasi</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Simulator CLI Linux Server</h2>
+        <p class="text-sm text-slate-400 mt-1.5">Coba jalankan perintah server seperti <code class="font-mono text-sky-300">systemctl status apache2</code>, <code class="font-mono text-sky-300">systemctl restart nginx</code>, <code class="font-mono text-sky-300">ssh admin@192.168.10.1</code>, <code class="font-mono text-sky-300">ip a</code>, atau <code class="font-mono text-sky-300">help</code>.</p>
+      </div>
+
+      <div class="glass-card rounded-2xl overflow-hidden">
+        <div class="bg-navy-950 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+          <span>root@debian-server:~</span>
+          <span class="text-emerald-400">SERVER ONLINE</span>
+        </div>
+        <div id="term-history" class="p-4 font-mono text-xs sm:text-sm space-y-2 max-h-72 overflow-y-auto bg-navy-950/70">
+          <div class="text-slate-400">Debian GNU/Linux Server Console. Ketik <span class="text-sky-400">help</span> untuk melihat daftar perintah administrasi server.</div>
+        </div>
+        <form id="term-form" class="flex items-center gap-2 p-3 bg-navy-950 border-t border-slate-800 font-mono text-xs sm:text-sm">
+          <span class="text-emerald-400 shrink-0">root@server:~#</span>
+          <input id="term-input" type="text" autocomplete="off" placeholder="Ketik perintah server lalu Enter..." class="w-full bg-transparent text-white focus:outline-none" />
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-navy-950 font-sans font-bold text-xs transition shrink-0">Jalankan</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latihan Pemahaman -->
+  <section id="latihan" class="py-16 border-t border-sky-500/15">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="max-w-2xl mb-8">
+        <span class="text-xs font-bold uppercase tracking-widest text-sky-400">Evaluasi Mandiri</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Latihan Pemahaman Linux Server</h2>
+        <p class="text-sm text-slate-400 mt-1.5">Jawab 4 soal berikut lalu klik <strong>Periksa jawaban</strong>.</p>
+      </div>
+
+      <form id="quiz-form" class="grid md:grid-cols-2 gap-5">
+        <div class="glass-card rounded-2xl p-5">
+          <p class="font-semibold text-white text-sm mb-3">1. Mengapa Linux Server umumnya dioperasikan menggunakan mode CLI (teks)?</p>
+          <div class="space-y-2 text-xs sm:text-sm text-slate-300">
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q1" value="a" class="accent-sky-400"> Agar lebih ringan, hemat sumber daya, dan stabil</label>
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q1" value="b" class="accent-sky-400"> Karena tidak mendukung jaringan</label>
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q1" value="c" class="accent-sky-400"> Agar tampilannya penuh animasi</label>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5">
+          <p class="font-semibold text-white text-sm mb-3">2. Protokol/perintah yang digunakan untuk mengakses Linux Server dari jarak jauh adalah ...</p>
+          <div class="space-y-2 text-xs sm:text-sm text-slate-300">
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q2" value="a" class="accent-sky-400"> <code class="font-mono">mkdir</code></label>
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q2" value="b" class="accent-sky-400"> <code class="font-mono">ssh</code></label>
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q2" value="c" class="accent-sky-400"> <code class="font-mono">clear</code></label>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5">
+          <p class="font-semibold text-white text-sm mb-3">3. Layanan pada Linux Server yang berfungsi membagikan IP Address otomatis ke client adalah ...</p>
+          <div class="space-y-2 text-xs sm:text-sm text-slate-300">
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q3" value="a" class="accent-sky-400"> Web Server</label>
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q3" value="b" class="accent-sky-400"> File Server</label>
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q3" value="c" class="accent-sky-400"> DHCP Server</label>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5">
+          <p class="font-semibold text-white text-sm mb-3">4. Perintah untuk mengecek status layanan pada Linux Server modern adalah ...</p>
+          <div class="space-y-2 text-xs sm:text-sm text-slate-300">
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q4" value="a" class="accent-sky-400"> <code class="font-mono">systemctl status &lt;layanan&gt;</code></label>
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q4" value="b" class="accent-sky-400"> <code class="font-mono">touch &lt;layanan&gt;</code></label>
+            <label class="flex items-center gap-2.5 cursor-pointer"><input type="radio" name="q4" value="c" class="accent-sky-400"> <code class="font-mono">whoami</code></label>
+          </div>
+        </div>
+
+        <div class="md:col-span-2 flex flex-col sm:flex-row sm:items-center gap-4">
+          <button type="submit" class="px-6 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-navy-950 font-bold text-sm transition w-fit">
+            Periksa jawaban
+          </button>
+          <div id="quiz-result" class="text-sm font-medium text-slate-300"></div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer (Tanpa Kontak & Laboratorium) -->
+  <footer class="bg-navy-950 border-t border-sky-500/15 py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="grid md:grid-cols-2 gap-8 pb-8 border-b border-slate-800/80">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="6" rx="1.5"/>
+                <rect x="3" y="14" width="18" height="6" rx="1.5"/>
+                <circle cx="7" cy="7" r="1" fill="currentColor"/>
+                <circle cx="7" cy="17" r="1" fill="currentColor"/>
+              </svg>
+            </div>
+            <span class="font-bold text-base sm:text-lg text-white">Teknik Komputer <span class="text-sky-400">dan Jaringan</span></span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-md">
+            Pusat pembelajaran dan pelatihan kompetensi Teknik Komputer dan Jaringan dengan fokus administrasi Linux Server dan layanan jaringan.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-widest text-white mb-3">Navigasi Halaman</h4>
+          <ul class="space-y-2 text-xs sm:text-sm text-slate-400">
+            <li><a href="#beranda" class="hover:text-sky-400 transition">Beranda</a></li>
+            <li><a href="#profil" class="hover:text-sky-400 transition">Profil Teknik Komputer dan Jaringan</a></li>
+            <li><a href="#materi" class="hover:text-sky-400 transition">Materi Linux Server</a></li>
+            <li><a href="#terminal" class="hover:text-sky-400 transition">Simulator Server</a></li>
+            <li><a href="#latihan" class="hover:text-sky-400 transition">Latihan Pemahaman</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+        <p>© 2026 Teknik Komputer dan Jaringan. Seluruh hak cipta dilindungi.</p>
+        <p>Materi Pembelajaran Teknik Komputer dan Jaringan</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle Menu Mobile
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    // Pencarian Materi
+    const searchInput = document.getElementById('search-materi');
+    const materiItems = document.querySelectorAll('.materi-item');
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      materiItems.forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    // Simulator CLI Server
+    const termForm = document.getElementById('term-form');
+    const termInput = document.getElementById('term-input');
+    const termHistory = document.getElementById('term-history');
+
+    function appendLine(html) {
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      termHistory.appendChild(div);
+      termHistory.scrollTop = termHistory.scrollHeight;
+    }
+
+    termForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const raw = termInput.value.trim();
+      if (!raw) return;
+      appendLine(`<span class="text-emerald-400">root@server:~#</span> <span class="text-white">${raw}</span>`);
+      const parts = raw.split(/\s+/);
+      const cmd = parts[0];
+
+      if (raw === 'clear') {
+        termHistory.innerHTML = '';
+      } else if (raw === 'help') {
+        appendLine(`<span class="text-sky-300">Perintah tersedia: systemctl status &lt;layanan&gt;, systemctl restart &lt;layanan&gt;, ssh user@ip, ip a, ping &lt;ip&gt;, whoami, clear</span>`);
+      } else if (cmd === 'systemctl') {
+        const action = parts[1];
+        const service = parts[2] || 'apache2';
+        if (action === 'status') {
+          appendLine(`<span class="text-emerald-400">● ${service}.service - Layanan ${service}<br/>   Loaded: loaded (/lib/systemd/system/${service}.service; enabled)<br/>   Active: active (running)</span>`);
+        } else if (action === 'restart') {
+          appendLine(`<span class="text-cyan-300">Layanan ${service} berhasil dimuat ulang (restarted).</span>`);
+        } else {
+          appendLine(`<span class="text-amber-300">Gunakan: systemctl status &lt;layanan&gt; atau systemctl restart &lt;layanan&gt;</span>`);
+        }
+      } else if (cmd === 'ssh') {
+        const target = parts[1] || 'admin@192.168.10.1';
+        appendLine(`<span class="text-emerald-400">Terhubung ke ${target} melalui SSH (Port 22).</span>`);
+      } else if (raw === 'ip' || raw === 'ip a') {
+        appendLine(`<span class="text-slate-300">1: lo: &lt;LOOPBACK,UP&gt; inet 127.0.0.1/8<br/>2: enp0s3: &lt;BROADCAST,MULTICAST,UP&gt; inet 192.168.10.1/24 brd 192.168.10.255</span>`);
+      } else if (cmd === 'ping') {
+        const target = parts[1] || '192.168.10.2';
+        appendLine(`<span class="text-emerald-400">PING ${target}: 64 bytes icmp_seq=1 ttl=64 time=0.9 ms<br/>PING ${target}: 64 bytes icmp_seq=2 ttl=64 time=0.8 ms</span>`);
+      } else if (raw === 'whoami') {
+        appendLine(`<span class="text-slate-200">root</span>`);
+      } else {
+        appendLine(`<span class="text-rose-400">bash: ${cmd}: perintah tidak dikenal. Ketik 'help'.</span>`);
+      }
+      termInput.value = '';
+    });
+
+    // Latihan Pemahaman
+    const quizForm = document.getElementById('quiz-form');
+    const quizResult = document.getElementById('quiz-result');
+    const kunci = { q1: 'a', q2: 'b', q3: 'c', q4: 'a' };
+
+    quizForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let skor = 0;
+      let terjawab = 0;
+      Object.keys(kunci).forEach(k => {
+        const checked = quizForm.querySelector(`input[name="${k}"]:checked`);
+        if (checked) {
+          terjawab++;
+          if (checked.value === kunci[k]) skor++;
+        }
+      });
+
+      if (terjawab < 4) {
+        quizResult.innerHTML = `<span class="text-amber-300">Silakan jawab semua 4 soal terlebih dahulu (${terjawab}/4 terjawab).</span>`;
+        return;
+      }
+
+      quizResult.innerHTML = `<span class="text-emerald-400 font-bold">Skor kamu: ${skor} / 4</span> <span class="text-slate-400 text-xs">(Kunci: 1. Ringan & stabil, 2. ssh, 3. DHCP Server, 4. systemctl status)</span>`;
+    });
+  </script>
+</body>
+  </html>
